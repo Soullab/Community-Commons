@@ -1,0 +1,174 @@
+
+> maia-sovereign-corpus-generator@1.0.0 audit:typehealth
+> cd MAIA-PAI-SOVEREIGN && npm run typecheck
+
+
+> spiralogic-oracle-system@0.1.0 typecheck
+> tsc --noEmit
+
+apps/web/components/lab/SacredLabDrawer.tsx(141,5): error TS1005: ')' expected.
+apps/web/components/lab/SacredLabDrawer.tsx(181,3): error TS1128: Declaration or statement expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(119,10): error TS1005: '>' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(119,15): error TS1005: ')' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(119,28): error TS1005: ',' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(119,35): error TS1005: ':' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(119,37): error TS1005: ';' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(121,12): error TS1005: ';' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(123,18): error TS1005: ',' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(124,11): error TS1434: Unexpected keyword or identifier.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(124,25): error TS1434: Unexpected keyword or identifier.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(126,10): error TS1110: Type expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(126,11): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(128,38): error TS1005: '{' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(128,41): error TS1136: Property assignment expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(128,44): error TS1128: Declaration or statement expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(128,61): error TS1128: Declaration or statement expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(129,22): error TS1136: Property assignment expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(129,73): error TS1128: Declaration or statement expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(130,9): error TS1109: Expression expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(131,27): error TS1005: ',' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(132,11): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(133,9): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(137,14): error TS1005: '>' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(137,23): error TS1005: ')' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(139,13): error TS1005: '>' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(139,18): error TS1005: ';' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(141,12): error TS1109: Expression expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(143,13): error TS1005: '>' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(143,18): error TS1005: ';' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(145,12): error TS1109: Expression expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(147,13): error TS1005: '>' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(147,22): error TS1005: ';' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(149,12): error TS1109: Expression expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(150,10): error TS1110: Type expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(150,11): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(151,7): error TS1128: Declaration or statement expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(156,11): error TS1005: '>' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(156,21): error TS1005: ')' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(157,36): error TS1005: ',' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(159,10): error TS1109: Expression expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(160,7): error TS1109: Expression expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(160,8): error TS1128: Declaration or statement expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(161,6): error TS1110: Type expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(161,7): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(162,3): error TS1128: Declaration or statement expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(163,1): error TS1128: Declaration or statement expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(574,23): error TS1005: ';' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(574,51): error TS1109: Expression expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(574,53): error TS1110: Type expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(574,54): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(578,24): error TS1005: ';' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(578,52): error TS1109: Expression expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(578,54): error TS1110: Type expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(578,55): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(582,21): error TS1005: ';' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(582,62): error TS1109: Expression expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(582,64): error TS1110: Type expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(582,65): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(588,20): error TS1005: ')' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(588,44): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(589,17): error TS1005: ',' expected.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(589,51): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(590,7): error TS1161: Unterminated regular expression literal.
+apps/web/lib/consciousness/ConsciousnessIntegrationExamples.ts(591,3): error TS1128: Declaration or statement expected.
+apps/web/lib/consciousness/maia-discernment-engine.ts(57,42): error TS1005: ',' expected.
+apps/web/lib/consciousness/maia-discernment-engine.ts(57,44): error TS1005: ',' expected.
+apps/web/lib/consciousness/maia-discernment-engine.ts(57,51): error TS1005: ',' expected.
+apps/web/lib/consciousness/maia-discernment-engine.ts(57,53): error TS1002: Unterminated string literal.
+apps/web/lib/consciousness/maia-discernment-engine.ts(58,5): error TS1005: ':' expected.
+apps/web/lib/consciousness/maia-discernment-engine.ts(58,10): error TS1005: ',' expected.
+apps/web/lib/consciousness/maia-discernment-engine.ts(58,16): error TS1005: ':' expected.
+apps/web/lib/consciousness/map-stack-architecture.ts(120,31): error TS1005: ',' expected.
+apps/web/lib/consciousness/map-stack-architecture.ts(120,33): error TS1005: ',' expected.
+apps/web/lib/consciousness/map-stack-architecture.ts(120,48): error TS1005: ',' expected.
+apps/web/lib/consciousness/map-stack-architecture.ts(120,56): error TS1005: ',' expected.
+apps/web/lib/consciousness/map-stack-architecture.ts(120,58): error TS1002: Unterminated string literal.
+apps/web/lib/consciousness/map-stack-architecture.ts(121,5): error TS1005: ':' expected.
+apps/web/lib/consciousness/map-stack-architecture.ts(121,18): error TS1005: ',' expected.
+apps/web/lib/consciousness/map-stack-architecture.ts(121,60): error TS1005: ':' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(170,34): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(170,36): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(170,54): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(170,58): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(170,66): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(170,67): error TS1002: Unterminated string literal.
+apps/web/lib/consciousness/spiralogic-core.ts(171,3): error TS1005: ':' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(232,19): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(232,21): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(232,29): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(232,41): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(232,56): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(232,58): error TS1002: Unterminated string literal.
+apps/web/lib/consciousness/spiralogic-core.ts(233,7): error TS1005: ':' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(233,12): error TS1005: ',' expected.
+apps/web/lib/consciousness/spiralogic-core.ts(233,53): error TS1005: ':' expected.
+apps/web/lib/onboarding/spiralogic-onboarding-flow.ts(430,33): error TS1005: ',' expected.
+apps/web/lib/onboarding/spiralogic-onboarding-flow.ts(430,36): error TS1005: ',' expected.
+apps/web/lib/onboarding/spiralogic-onboarding-flow.ts(430,42): error TS1005: ',' expected.
+apps/web/lib/onboarding/spiralogic-onboarding-flow.ts(430,50): error TS1005: ',' expected.
+apps/web/lib/onboarding/spiralogic-onboarding-flow.ts(430,51): error TS1003: Identifier expected.
+apps/web/lib/onboarding/spiralogic-onboarding-flow.ts(430,52): error TS1002: Unterminated string literal.
+apps/web/lib/onboarding/spiralogic-onboarding-flow.ts(431,3): error TS1005: ':' expected.
+components/journaling/NeuroplasticitySessionTimer.tsx(142,25): error TS1005: '}' expected.
+components/journaling/NeuroplasticitySessionTimer.tsx(142,58): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(557,10): error TS1005: '>' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(557,19): error TS1005: ')' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(558,11): error TS1005: '>' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(558,20): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(558,40): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(558,64): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(560,12): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(562,18): error TS1005: '>' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(562,27): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(562,62): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(562,71): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(564,35): error TS1005: ',' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(565,23): error TS1136: Property assignment expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(565,27): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(568,12): error TS1109: Expression expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(569,10): error TS1110: Type expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(569,11): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(572,18): error TS1005: '>' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(572,27): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(572,70): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(572,77): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(574,35): error TS1005: ',' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(575,23): error TS1136: Property assignment expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(575,27): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(575,107): error TS1128: Declaration or statement expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(578,12): error TS1109: Expression expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(579,10): error TS1110: Type expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(579,11): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(580,9): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(586,18): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(587,9): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(589,12): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(590,13): error TS1005: '>' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(590,22): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(590,44): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(590,55): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(592,16): error TS1005: '>' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(592,19): error TS1005: ')' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(592,29): error TS1005: ',' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(592,34): error TS1005: ',' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(593,18): error TS1005: '>' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(593,27): error TS1005: ',' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(593,51): error TS1005: ',' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(593,68): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(594,18): error TS1005: ',' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(594,53): error TS1005: ',' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(594,86): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(595,13): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(596,10): error TS1005: ';' expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(597,8): error TS1110: Type expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(597,9): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(598,7): error TS1161: Unterminated regular expression literal.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(599,3): error TS1128: Declaration or statement expected.
+docs/consciousness_field_science/MANUAL_OVERRIDE_SYSTEM.ts(600,1): error TS1128: Declaration or statement expected.
+lib/i18n/languageUtils.ts(68,37): error TS1005: ')' expected.
+lib/i18n/languageUtils.ts(68,82): error TS1005: ';' expected.
+scripts/newsletter/simple-test.ts(30,178): error TS1005: ',' expected.
+scripts/newsletter/simple-test.ts(30,180): error TS1005: ',' expected.
+scripts/newsletter/simple-test.ts(30,191): error TS1005: ',' expected.
+scripts/newsletter/simple-test.ts(30,206): error TS1002: Unterminated string literal.
+scripts/newsletter/simple-test.ts(31,3): error TS1005: ',' expected.

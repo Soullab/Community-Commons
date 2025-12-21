@@ -1,0 +1,20 @@
+{
+  "name": "maia-sovereign-corpus-generator",
+  "version": "1.0.0",
+  "description": "MAIA Sovereign Voice Corpus Generation Pipeline",
+  "type": "module",
+  "main": "generate_corpus.js",
+  "scripts": {
+    "generate": "node generate_corpus.js",
+    "test": "node --experimental-modules test-corpus.js",
+    "audit:typehealth": "cd MAIA-PAI-SOVEREIGN && npm run typecheck",
+    "typecheck": "cd MAIA-PAI-SOVEREIGN && npm run typecheck"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.76.1",
+    "node-fetch": "^3.3.2",
+    "sharp": "^0.34.4"
+  },
+  "author": "Soullab",
+  "license": "MIT"
+}
