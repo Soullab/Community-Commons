@@ -219,12 +219,14 @@ class ProviderUnavailableError(Exception):
 class AINProviderRouter:
     """Routes AIN requests across multiple providers with failover"""
 
-    def __init__(self, preference: Optional[str] = None):
+    def __init__(self, preference: Optional[str] = None, fallback_chain: Optional[str] = None):
         """
         Initialize provider router.
 
         Args:
             preference: Preferred provider ('anthropic', 'openai', 'local', or None for auto)
+            fallback_chain: Custom fallback chain as comma-separated string (e.g., 'openai,local,anthropic')
+                          Overrides default priority. Can also be set via AIN_FALLBACK_CHAIN env var.
         """
         self.preference = preference or os.environ.get("AIN_PROVIDER", "auto")
 
@@ -235,8 +237,20 @@ class AINProviderRouter:
             "local": OllamaProvider(),
         }
 
-        # Default priority order
-        self.priority = ["anthropic", "openai", "local"]
+        # Configurable priority order via env var or parameter
+        fallback_chain = fallback_chain or os.environ.get("AIN_FALLBACK_CHAIN", "")
+        if fallback_chain:
+            # Parse comma-separated chain (e.g., "openai,local,anthropic")
+            custom_priority = [p.strip() for p in fallback_chain.split(",")]
+            # Validate all providers exist
+            valid_providers = set(self.providers.keys())
+            invalid = [p for p in custom_priority if p not in valid_providers]
+            if invalid:
+                raise ValueError(f"Invalid providers in fallback chain: {invalid}. Valid: {list(valid_providers)}")
+            self.priority = custom_priority
+        else:
+            # Default priority order
+            self.priority = ["anthropic", "openai", "local"]
 
     def get_available_providers(self) -> list:
         """Get list of available providers in priority order"""
@@ -318,6 +332,7 @@ async def get_llm_response(
     max_tokens: int = 1024,
     temperature: float = 1.0,
     provider: Optional[str] = None,
+    fallback_chain: Optional[str] = None,
     verbose: bool = False
 ) -> tuple[str, str]:
     """
@@ -329,12 +344,13 @@ async def get_llm_response(
         max_tokens: Max tokens to generate
         temperature: Sampling temperature
         provider: Preferred provider ('anthropic', 'openai', 'local', or None for auto)
+        fallback_chain: Custom fallback chain (e.g., 'openai,local')
         verbose: Print provider routing info
 
     Returns:
         (response_text, provider_used)
     """
-    router = AINProviderRouter(preference=provider)
+    router = AINProviderRouter(preference=provider, fallback_chain=fallback_chain)
     return await router.generate(
         prompt=prompt,
         system=system,
