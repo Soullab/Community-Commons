@@ -14,6 +14,7 @@ import asyncio
 import json
 import os
 import sys
+import traceback
 from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Any, Optional
@@ -37,6 +38,36 @@ PROVIDER_PREFERENCE = os.environ.get("AIN_PROVIDER", "auto")
 
 # Initialize router (will check for available providers)
 router = AINProviderRouter(preference=PROVIDER_PREFERENCE)
+
+
+# JSON output helpers
+def _log(*args, **kwargs):
+    """Log to stderr (for status/progress messages in JSON mode)"""
+    print(*args, file=sys.stderr, **kwargs)
+
+
+def _emit_json(obj: Dict[str, Any], pretty: bool = False):
+    """Emit JSON to stdout (for machine-readable output)"""
+    if pretty:
+        print(json.dumps(obj, ensure_ascii=False, indent=2))
+    else:
+        print(json.dumps(obj, ensure_ascii=False))
+
+
+def _result_envelope_ok(result: Dict[str, Any]) -> Dict[str, Any]:
+    """Wrap successful result in standard envelope"""
+    return {"ok": True, **result}
+
+
+def _result_envelope_err(stage: str, err: Exception) -> Dict[str, Any]:
+    """Wrap error in standard envelope"""
+    return {
+        "ok": False,
+        "stage": stage,
+        "error": str(err),
+        "error_type": err.__class__.__name__,
+        "traceback": traceback.format_exc(limit=8),
+    }
 
 
 class Agent:
@@ -104,13 +135,13 @@ class CommitteeOrchestrator:
             Dict with responses, synthesis, and metadata
         """
 
-        print(f"\n🧠 Spawning committee with {len(framings)} agents...")
+        _log(f"\n🧠 Spawning committee with {len(framings)} agents...")
 
         # Show available providers
         available = router.get_available_providers()
         if verbose:
-            print(f"   Available providers: {', '.join([p[1].name for p in available])}")
-        print()
+            _log(f"   Available providers: {', '.join([p[1].name for p in available])}")
+        _log()
 
         # Create agents
         agents = [
@@ -119,7 +150,7 @@ class CommitteeOrchestrator:
         ]
 
         # Parallel execution
-        print("⚡ Running parallel deliberation...")
+        _log("⚡ Running parallel deliberation...")
         start_time = datetime.now()
 
         responses = await asyncio.gather(*[
@@ -127,7 +158,7 @@ class CommitteeOrchestrator:
         ])
 
         elapsed = (datetime.now() - start_time).total_seconds()
-        print(f"✅ Collected {len(responses)} responses in {elapsed:.1f}s\n")
+        _log(f"✅ Collected {len(responses)} responses in {elapsed:.1f}s\n")
 
         # Build response dict
         agent_responses = {
@@ -139,7 +170,7 @@ class CommitteeOrchestrator:
         }
 
         # Synthesize
-        print("🔮 Generating dialectical synthesis...")
+        _log("🔮 Generating dialectical synthesis...")
         synthesis, synthesis_provider = await self._synthesize(question, agent_responses, verbose)
 
         # Log session
@@ -243,7 +274,7 @@ Format your synthesis as:
             with open(file_path, 'r') as f:
                 content = f.read()
         except FileNotFoundError:
-            print(f"Error: File not found: {file_path}")
+            _log(f"Error: File not found: {file_path}")
             return {}
 
         # Read writing style guide if available
@@ -291,42 +322,14 @@ Quote specific passages when giving feedback.
         return await self.deliberate(question, framings, verbose=verbose)
 
 
-async def main():
+async def main(args):
     """CLI interface for AIN orchestrator"""
 
-    if len(sys.argv) < 2:
-        print("""
-AIN Committee Orchestrator
-
-Usage:
-  python3 ain_orchestrator.py deliberate "<question>"
-  python3 ain_orchestrator.py review-writing <file-path>
-  python3 ain_orchestrator.py custom-deliberate "<question>" <config.json>
-
-Examples:
-  python3 ain_orchestrator.py deliberate "How should we implement emergence detection v2?"
-  python3 ain_orchestrator.py review-writing ~/soullab-workspace/writing/blog-post.md
-
-For custom deliberations, create a JSON file with framings:
-{
-  "framings": [
-    {"name": "Agent 1", "framing": "Your lens description"},
-    {"name": "Agent 2", "framing": "Your lens description"}
-  ],
-  "context": "Optional shared context"
-}
-""")
-        sys.exit(1)
-
     orchestrator = CommitteeOrchestrator()
-    command = sys.argv[1]
+    command = args.command
 
     if command == "deliberate":
-        if len(sys.argv) < 3:
-            print("Error: Question required")
-            sys.exit(1)
-
-        question = sys.argv[2]
+        question = args.question
 
         # Default framings for general deliberation
         framings = [
@@ -352,16 +355,50 @@ For custom deliberations, create a JSON file with framings:
             }
         ]
 
-        result = await orchestrator.deliberate(question, framings)
+        result = await orchestrator.deliberate(question, framings, verbose=args.verbose)
+        return result
 
-        # Print results
+    elif command == "review-writing":
+        file_path = args.file_path
+        result = await orchestrator.review_writing(file_path, verbose=args.verbose)
+        return result if result else {"error": "File not found"}
+
+    elif command == "custom-deliberate":
+        question = args.question
+        config_path = args.config
+
+        try:
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+        except Exception as e:
+            _log(f"Error loading config: {e}")
+            return {"error": f"Config load failed: {str(e)}"}
+
+        framings = config.get("framings", [])
+        context = config.get("context", "")
+
+        result = await orchestrator.deliberate(question, framings, context, verbose=args.verbose)
+        return result
+
+    else:
+        return {"error": f"Unknown command: {command}"}
+
+
+def _print_human_readable(result: Dict[str, Any], command: str, question: str = "", file_path: str = ""):
+    """Print results in human-readable format"""
+    if "error" in result:
+        print(f"Error: {result['error']}")
+        return
+
+    if command == "deliberate" or command == "custom-deliberate":
         print("\n" + "="*80)
         print(f"QUESTION: {question}")
         print("="*80)
 
         for name, data in result["responses"].items():
             print(f"\n### {name}")
-            print(f"*{data['framing']}*\n")
+            if "framing" in data:
+                print(f"*{data['framing']}*\n")
             print(data['response'])
             print()
 
@@ -372,53 +409,8 @@ For custom deliberations, create a JSON file with framings:
         print()
 
     elif command == "review-writing":
-        if len(sys.argv) < 3:
-            print("Error: File path required")
-            sys.exit(1)
-
-        file_path = sys.argv[2]
-        result = await orchestrator.review_writing(file_path)
-
-        if result:
-            # Print results
-            print("\n" + "="*80)
-            print(f"WRITING REVIEW: {file_path}")
-            print("="*80)
-
-            for name, data in result["responses"].items():
-                print(f"\n### {name}")
-                print(data['response'])
-                print()
-
-            print("\n" + "="*80)
-            print("SYNTHESIS")
-            print("="*80)
-            print(result["synthesis"])
-            print()
-
-    elif command == "custom-deliberate":
-        if len(sys.argv) < 4:
-            print("Error: Question and config file required")
-            sys.exit(1)
-
-        question = sys.argv[2]
-        config_path = sys.argv[3]
-
-        try:
-            with open(config_path, 'r') as f:
-                config = json.load(f)
-        except Exception as e:
-            print(f"Error loading config: {e}")
-            sys.exit(1)
-
-        framings = config.get("framings", [])
-        context = config.get("context", "")
-
-        result = await orchestrator.deliberate(question, framings, context)
-
-        # Print results
         print("\n" + "="*80)
-        print(f"QUESTION: {question}")
+        print(f"WRITING REVIEW: {file_path}")
         print("="*80)
 
         for name, data in result["responses"].items():
@@ -432,10 +424,90 @@ For custom deliberations, create a JSON file with framings:
         print(result["synthesis"])
         print()
 
-    else:
-        print(f"Unknown command: {command}")
-        sys.exit(1)
-
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="AIN Committee Orchestrator - Multi-agent deliberation with dialectical synthesis",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python3 ain_orchestrator.py deliberate "How should we implement emergence detection v2?"
+  python3 ain_orchestrator.py review-writing ~/soullab-workspace/writing/blog-post.md
+  python3 ain_orchestrator.py deliberate "Question" --json
+  python3 ain_orchestrator.py deliberate "Question" --json-pretty
+
+For custom deliberations, create a JSON file with framings:
+{
+  "framings": [
+    {"name": "Agent 1", "framing": "Your lens description"},
+    {"name": "Agent 2", "framing": "Your lens description"}
+  ],
+  "context": "Optional shared context"
+}
+        """
+    )
+
+    subparsers = parser.add_subparsers(dest="command", help="Command to run")
+
+    # Deliberate command
+    deliberate_parser = subparsers.add_parser("deliberate", help="Run multi-agent deliberation")
+    deliberate_parser.add_argument("question", help="Question to deliberate")
+    deliberate_parser.add_argument("--json", action="store_true", help="Output JSON to stdout")
+    deliberate_parser.add_argument("--json-pretty", action="store_true", help="Pretty-print JSON (implies --json)")
+    deliberate_parser.add_argument("--verbose", action="store_true", help="Show provider routing info")
+
+    # Review writing command
+    review_parser = subparsers.add_parser("review-writing", help="Multi-perspective writing review")
+    review_parser.add_argument("file_path", help="Path to markdown file to review")
+    review_parser.add_argument("--json", action="store_true", help="Output JSON to stdout")
+    review_parser.add_argument("--json-pretty", action="store_true", help="Pretty-print JSON (implies --json)")
+    review_parser.add_argument("--verbose", action="store_true", help="Show provider routing info")
+
+    # Custom deliberate command
+    custom_parser = subparsers.add_parser("custom-deliberate", help="Custom deliberation with config file")
+    custom_parser.add_argument("question", help="Question to deliberate")
+    custom_parser.add_argument("config", help="Path to JSON config file with framings")
+    custom_parser.add_argument("--json", action="store_true", help="Output JSON to stdout")
+    custom_parser.add_argument("--json-pretty", action="store_true", help="Pretty-print JSON (implies --json)")
+    custom_parser.add_argument("--verbose", action="store_true", help="Show provider routing info")
+
+    args = parser.parse_args()
+
+    if not args.command:
+        parser.print_help()
+        sys.exit(1)
+
+    # Handle json-pretty (implies json)
+    if hasattr(args, "json_pretty") and args.json_pretty:
+        args.json = True
+
+    # Run main and handle output
+    try:
+        result = asyncio.run(main(args))
+
+        # Output results
+        if args.json:
+            _emit_json(_result_envelope_ok(result), pretty=args.json_pretty)
+        else:
+            _print_human_readable(
+                result,
+                args.command,
+                question=getattr(args, "question", ""),
+                file_path=getattr(args, "file_path", "")
+            )
+
+        sys.exit(0)
+
+    except Exception as e:
+        _log(f"❌ AIN failed: {str(e)}")
+
+        if hasattr(args, "json") and args.json:
+            _emit_json(_result_envelope_err(stage="main", err=e), pretty=getattr(args, "json_pretty", False))
+        else:
+            _log(f"\nError: {str(e)}")
+            if hasattr(args, "verbose") and args.verbose:
+                _log(traceback.format_exc())
+
+        sys.exit(1)
