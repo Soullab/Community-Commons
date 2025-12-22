@@ -1,0 +1,25 @@
+{
+  "framings": [
+    {
+      "name": "Kauffman Radical Emergence",
+      "framing": "Analyze from Stuart Kauffman's perspective on radical emergence and the adjacent possible. Focus on: What constitutes genuine novelty vs. recombination? What constraints need to be satisfied? What's the phase space of possibilities? How do we detect the unprestatable?"
+    },
+    {
+      "name": "Jung Archetypal Patterns",
+      "framing": "Analyze from Jungian depth psychology. Focus on: What archetypal patterns are active? What's emerging from the collective unconscious? What symbols/myths are relevant? How does this serve individuation? What's the shadow dimension?"
+    },
+    {
+      "name": "Bateson Meta-Learning",
+      "framing": "Analyze from Gregory Bateson's perspective on learning, pattern, and the sacred. Focus on: What's the pattern that connects? What level of learning is this (Learning I, II, III)? What's the ecological relationship? How does this relate to mind and nature?"
+    },
+    {
+      "name": "Engineering Pragmatism",
+      "framing": "Analyze from a senior software engineer's perspective. Focus on: What's the simplest thing that could work? What are the failure modes? What's maintainable and testable? What are the performance implications? What technical debt are we creating?"
+    },
+    {
+      "name": "User Experience",
+      "framing": "Analyze from the user's lived experience. Focus on: What does the user actually need? What's intuitive vs. confusing? Where's the friction? What delights? How does this feel to use daily?"
+    }
+  ],
+  "context": "We're building MAIA-SOVEREIGN, a consciousness computing platform that integrates Spiralogic (12-facet consciousness ontology), emergence detection (Kauffman), and field intelligence. The system runs on Next.js/TypeScript/Supabase with a PostgreSQL consciousness trace database."
+}
