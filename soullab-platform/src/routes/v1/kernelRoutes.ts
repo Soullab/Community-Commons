@@ -25,6 +25,7 @@ import {
 
 const SPIRALOGIC_SERVICE_URL = process.env.SPIRALOGIC_SERVICE_URL || "http://localhost:5100";
 const AIN_SERVICE_URL = process.env.AIN_SERVICE_URL || "http://localhost:5200";
+const PRACTICES_SERVICE_URL = process.env.PRACTICES_SERVICE_URL || "http://localhost:5300";
 const DEFAULT_TIMEOUT_MS = 8000; // 8 seconds - fail fast
 
 interface SpiralogicDetectResponse {
@@ -723,16 +724,104 @@ export async function kernelRoutes(app: FastifyInstance) {
   // ---------------------------------------------------------------------------
 
   app.post("/v1/practices/generate", async (req, reply) => {
-    const body = PracticeGenerateBody.parse(req.body);
     const behaviorVersion = resolveBehaviorVersion(req);
     const traceId = generateId("tr");
-
-    // TODO: Call emergent_archetypes_v1.py
-
     setResponseHeaders(reply, behaviorVersion, traceId);
-    return {
-      practices: [],
-    };
+
+    let body: z.infer<typeof PracticeGenerateBody>;
+    try {
+      body = PracticeGenerateBody.parse(req.body);
+    } catch (e: any) {
+      return reply.status(400).send(
+        kernelErrorEnvelope("BAD_REQUEST", e?.message || "Invalid request body")
+      );
+    }
+
+    try {
+      const raw = await postJsonWithTimeout<any>(
+        `${PRACTICES_SERVICE_URL}/generate`,
+        {
+          facet_code: body.facet_code,
+          element_preference: body.element_preference,
+          duration_available_min: body.duration_available_min ?? 15,
+          difficulty: body.difficulty ?? "easy",
+          contraindications: body.contraindications ?? [],
+          behavior_version: behaviorVersion,
+        },
+        DEFAULT_TIMEOUT_MS,
+        {
+          "X-SK-Trace-Id": traceId,
+          "X-SK-Behavior-Version": behaviorVersion,
+        }
+      );
+
+      return {
+        practices: Array.isArray(raw?.practices) ? raw.practices : [],
+        behavior_version:
+          typeof raw?.behavior_version === "string"
+            ? raw.behavior_version
+            : behaviorVersion,
+      };
+    } catch (error) {
+      const isTimeout = error instanceof Error && error.name === "AbortError";
+
+      if (isTimeout) {
+        return reply
+          .status(504)
+          .send(
+            kernelErrorEnvelope(
+              "PRACTICES_TIMEOUT",
+              "Practices service timed out",
+              2000
+            )
+          );
+      }
+
+      const retryAfterMs =
+        error instanceof UpstreamServiceError ? error.retryAfterMs : undefined;
+      console.warn(`Practices service unavailable: ${error}`);
+      return reply
+        .status(503)
+        .send(
+          kernelErrorEnvelope(
+            "PRACTICES_UNAVAILABLE",
+            "Practices service temporarily unavailable",
+            retryAfterMs ?? 5000
+          )
+        );
+    }
+  });
+
+  // Health proxy - check if practices service is up
+  app.get("/v1/practices/health", async (_req, reply) => {
+    const traceId = generateId("tr");
+    reply.header("X-SK-Trace-Id", traceId);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000);
+
+    try {
+      const response = await fetch(`${PRACTICES_SERVICE_URL}/health`, {
+        signal: controller.signal,
+        headers: { "X-SK-Trace-Id": traceId },
+      });
+
+      const { json } = await readJsonOrText(response);
+
+      if (response.ok) {
+        return { status: "ok", service: "practices", upstream: json ?? {} };
+      }
+
+      return reply
+        .status(503)
+        .send(kernelErrorEnvelope("PRACTICES_UNHEALTHY", "Service returned non-ok"));
+    } catch (_error) {
+      return reply
+        .status(503)
+        .send(kernelErrorEnvelope("PRACTICES_UNREACHABLE", "Cannot reach practices service"));
+    } finally {
+      clearTimeout(timeout);
+    }
   });
 
   app.get("/v1/timeline/summary", async (req, reply) => {
