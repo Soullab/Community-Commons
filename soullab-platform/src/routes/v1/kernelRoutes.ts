@@ -173,58 +173,6 @@ function normalizeAinDeliberationResponse(
 }
 
 /**
- * Normalize Practices response to stable v1 contract
- */
-type PracticeItem = {
-  id: string;
-  facet_code: string;
-  element: "fire" | "water" | "earth" | "air" | "aether";
-  title: string;
-  duration_min: number;
-  difficulty: "easy" | "moderate" | "advanced" | string;
-  steps: string[];
-  tags: string[];
-  contraindications: string[];
-};
-
-function normalizePracticesResponse(
-  raw: any,
-  fallbackFacet: string,
-  fallbackBehaviorVersion: string
-): { practices: PracticeItem[]; behavior_version: string } {
-  const list = Array.isArray(raw?.practices) ? raw.practices : [];
-
-  const practices: PracticeItem[] = list
-    .filter((p: any) => p && typeof p === "object")
-    .map((p: any) => ({
-      id: typeof p.id === "string" ? p.id : generateId("prac"),
-      facet_code: typeof p.facet_code === "string" ? p.facet_code : fallbackFacet,
-      element:
-        p.element === "fire" ||
-        p.element === "water" ||
-        p.element === "earth" ||
-        p.element === "air" ||
-        p.element === "aether"
-          ? p.element
-          : "aether",
-      title: typeof p.title === "string" ? p.title : "",
-      duration_min: typeof p.duration_min === "number" ? p.duration_min : 10,
-      difficulty: typeof p.difficulty === "string" ? p.difficulty : "easy",
-      steps: Array.isArray(p.steps) ? p.steps.filter((s: any) => typeof s === "string") : [],
-      tags: Array.isArray(p.tags) ? p.tags.filter((t: any) => typeof t === "string") : [],
-      contraindications: Array.isArray(p.contraindications)
-        ? p.contraindications.filter((c: any) => typeof c === "string")
-        : [],
-    }));
-
-  return {
-    practices,
-    behavior_version:
-      typeof raw?.behavior_version === "string" ? raw.behavior_version : fallbackBehaviorVersion,
-  };
-}
-
-/**
  * Consistent error envelope - never lies
  */
 function kernelErrorEnvelope(
@@ -807,7 +755,13 @@ export async function kernelRoutes(app: FastifyInstance) {
         }
       );
 
-      return normalizePracticesResponse(raw, body.facet_code, behaviorVersion);
+      return {
+        practices: Array.isArray(raw?.practices) ? raw.practices : [],
+        behavior_version:
+          typeof raw?.behavior_version === "string"
+            ? raw.behavior_version
+            : behaviorVersion,
+      };
     } catch (error) {
       const isTimeout = error instanceof Error && error.name === "AbortError";
 
