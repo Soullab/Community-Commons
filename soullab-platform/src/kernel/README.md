@@ -12,12 +12,11 @@ Node.js (Fastify)              Python Services        In-Process
 │  /v1/spiralogic ───┼────────┘                  │   └──────┬──────┘
 │  /v1/ain ──────────┼────────┐                  │          │
 │  /v1/memory ───────┼────────┼──────────────────┼──────────┘
-│  /v1/practices ────┼────────┼─────────┐        │
-└────────────────────┘        ▼         ▼        │
-                        ┌──────────┐ ┌───────────┐
-                        │ain_service│ │practices  │
-                        │ port 5200 │ │ port 5300 │
-                        └──────────┘ └───────────┘
+│  /v1/practices     │        ▼                  │
+└────────────────────┘  ┌──────────────────┐
+                        │   ain_service    │
+                        │    port 5200     │
+                        └──────────────────┘
 ```
 
 ## Running the Services
@@ -40,16 +39,7 @@ python ain_service.py
 
 The service will start on port 5200.
 
-### 3. Start the Practices Service (in another terminal)
-
-```bash
-cd /Users/soullab/soullab-platform/src/kernel
-python practices_service.py
-```
-
-The service will start on port 5300.
-
-### 4. Start the Main API (in another terminal)
+### 3. Start the Main API (in another terminal)
 
 ```bash
 cd /Users/soullab/soullab-platform
@@ -192,27 +182,6 @@ curl -X POST http://localhost:3000/v1/memory/retrieve \
 curl "http://localhost:3000/v1/memory/patterns/usr_demo?org_id=org_demo&space_id=spc_demo"
 ```
 
-### Practices API Test
-
-```bash
-# Health check
-curl http://localhost:3000/v1/practices/health
-
-# Generate practices for a facet
-curl -X POST http://localhost:3000/v1/practices/generate \
-  -H "Content-Type: application/json" \
-  -H "X-SK-Behavior-Version: 2026-01" \
-  -d '{
-    "org_id": "org_demo",
-    "user_id": "usr_demo",
-    "facet_code": "W2",
-    "duration_available_min": 15,
-    "difficulty": "easy",
-    "contraindications": []
-  }'
-# Returns 3 water-element practices with steps, tags, and durations
-```
-
 ## Environment Variables
 
 | Variable | Default | Description |
@@ -221,8 +190,6 @@ curl -X POST http://localhost:3000/v1/practices/generate \
 | `SPIRALOGIC_SERVICE_URL` | http://localhost:5100 | URL for Node to call spiralogic |
 | `AIN_SERVICE_PORT` | 5200 | Port for AIN service |
 | `AIN_SERVICE_URL` | http://localhost:5200 | URL for Node to call AIN |
-| `PRACTICES_PORT` | 5300 | Port for practices service |
-| `PRACTICES_SERVICE_URL` | http://localhost:5300 | URL for Node to call practices |
 | `SK_DEFAULT_BEHAVIOR_VERSION` | 2026-01 | Default behavior version |
 
 ## Service Dependencies
