@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Check for jq
+if ! command -v jq &> /dev/null; then
+  echo "Error: jq is required. Install with: brew install jq"
+  exit 1
+fi
+
 BASE="${BASE:-http://localhost:3000}"
 BV="${BV:-2026-01}"
 

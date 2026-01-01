@@ -167,6 +167,50 @@ paths:
                   store_type: { type: string }
                   total_items: { type: integer }
 
+  /v1/practices/generate:
+    post:
+      summary: Generate consciousness practices for a facet
+      description: |
+        Returns 3 element-appropriate practices based on the user's current
+        consciousness facet, available time, and difficulty preference.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PracticesGenerateRequest"
+      responses:
+        "200":
+          description: Practices generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PracticesGenerateResponse"
+        "503":
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+
+  /v1/practices/health:
+    get:
+      summary: Practices service health check
+      responses:
+        "200":
+          description: Practices service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, enum: [ok] }
+                  service: { type: string, enum: [practices] }
+                  capabilities:
+                    type: array
+                    items: { type: string }
+                  behavior_version_default: { type: string }
+
 components:
   schemas:
     TenantContext:
@@ -435,3 +479,60 @@ components:
               count: { type: integer }
         total_memories: { type: integer }
         behavior_version: { type: string }
+
+    PracticesGenerateRequest:
+      type: object
+      required: [org_id, user_id, facet_code]
+      properties:
+        org_id: { type: string, minLength: 1 }
+        user_id: { type: string, minLength: 1 }
+        facet_code: { $ref: "#/components/schemas/FacetCode" }
+        element_preference:
+          type: string
+          enum: [fire, water, earth, air, aether]
+          description: Optional override. If omitted, derived from facet_code.
+        duration_available_min:
+          type: integer
+          minimum: 5
+          maximum: 120
+          default: 15
+        difficulty:
+          type: string
+          enum: [easy, moderate, advanced]
+          default: easy
+        contraindications:
+          type: array
+          items: { type: string }
+          description: Tags of practices to exclude (e.g., ["physical", "breathwork"])
+
+    PracticesGenerateResponse:
+      type: object
+      properties:
+        practices:
+          type: array
+          items:
+            $ref: "#/components/schemas/PracticeItem"
+        behavior_version: { type: string }
+
+    PracticeItem:
+      type: object
+      properties:
+        id: { type: string }
+        facet_code: { type: string }
+        element:
+          type: string
+          enum: [fire, water, earth, air, aether]
+        title: { type: string }
+        duration_min: { type: integer }
+        difficulty:
+          type: string
+          enum: [easy, moderate, advanced]
+        steps:
+          type: array
+          items: { type: string }
+        tags:
+          type: array
+          items: { type: string }
+        contraindications:
+          type: array
+          items: { type: string }
